@@ -38,7 +38,7 @@ void PlagiaristsCatcher::printFileNames() {
     }
 }
 
-void PlagiaristsCatcher::printFileContents(const string dir, const int idx) {
+/*void PlagiaristsCatcher::printFileContents(const string dir, const int idx) {
     string filePath = dir + "/" + files[idx];
     string line;
     fstream opnFile;
@@ -53,4 +53,20 @@ void PlagiaristsCatcher::printFileContents(const string dir, const int idx) {
     else
         cout << "Error. File cannot open" << endl;
 
+}
+Used for testing purposes */
+
+vector<string> PlagiaristsCatcher::getAllWords(const string dir, const int filesIdx){
+    vector<string> wordsInFile;
+    string filePath = dir + "/" + files[filesIdx];
+    string word;
+    fstream opnFile;
+    opnFile.open(filePath);
+    if (opnFile.is_open()){
+        while (opnFile >> word){
+            string newWord = removePunctuations(word);
+            wordsInFile.push_back(newWord);
+        }
+    }
+    return wordsInFile;
 }
