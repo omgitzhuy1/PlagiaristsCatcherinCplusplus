@@ -51,11 +51,10 @@ public:
 
     void InsertNode(const string& nwords, const unsigned int Idx) {   // idx == fileIndex
         unsigned long int key = HashFunctionKey(nwords);
-        if (hTable[key] == NULL) {
-            HashNode *newNode = new HashNode(Idx);
+        HashNode* newNode = new HashNode(Idx);
+        if (hTable[key] == NULL)
             hTable[key] = newNode;
-        } else if (hTable[key] != NULL) {
-            HashNode *newNode = new HashNode(Idx);
+        else if (hTable[key] != NULL) {
             newNode->next = hTable[key];
             hTable[key] = newNode;
         }
@@ -93,12 +92,13 @@ private:
     unsigned long long int HashFunctionKey(const string& k){
         unsigned long long int key = 0;
         const unsigned int base = 11;
-        for (unsigned long int i = 0; i<k.length(); i++){
+        const unsigned int letters = 16;
+        for (unsigned int i = 0; i<letters; i++){
             key = key + ((unsigned long long int)k[i]*((unsigned long long int)pow(base,i)));
         }
         return (key%TableSz);
     }
-    const unsigned long int TableSz = 49999;
+    const unsigned long int TableSz = 199999;
     HashNode** hTable;                                      // hTable is a pointer to a bunch of HashNodes
 };
 

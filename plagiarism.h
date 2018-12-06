@@ -46,14 +46,13 @@ private:
     //////////////////////////////////////////////////////////////////////////////////////
     // Private function to remove all punctuations and converting capitals to lowercase
     string removePunctuations(string word){
-        const char A = 'A', Z = 'Z';
         const int lowerCase = 32;
         string newWord;
         for (int i = 0; i<word.length();i++){
-            if ((word[i]>=33 && word[i]<=47) || (word[i]>=58 && word[i]<=64)){
+            if ((word[i]<'A' || (word[i]>'Z' && word[i]<'a') || word[i]>'z')){
                 word.erase(word.begin()+i);
             }
-            else if (word[i] >= A && word[i]<=Z){
+            else if (word[i] >= 'A' && word[i]<='Z'){
                 word[i] = word[i] + 32;
             }
         }

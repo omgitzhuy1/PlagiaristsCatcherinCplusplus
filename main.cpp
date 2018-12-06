@@ -42,8 +42,8 @@ int main() {
     HashTable testHash;
 
 
-    /*vector<unsigned long long int> keys;                                              // Works
-    unsigned int matchCount = 0;
+    vector<unsigned long long int> keys;                                              // Works
+    /*unsigned int matchCount = 0;
     cout << "\n\nTesting HashFunction and getKey:" << endl;
     unsigned long long int maxKey = 0;
     for (unsigned int i = 0; i<nSequence.size(); i++){
