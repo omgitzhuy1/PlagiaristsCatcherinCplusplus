@@ -40,10 +40,20 @@ int main() {
     // cout << "Size of words vector (should be zero): " << words.size() << endl;       // Works
 
     HashTable testHash;
+    for (unsigned int i = 0; i<nSequence.size(); i++) {
+        testHash.InsertNode(nSequence[i], 2);
+    }
 
+    words = test1.getAllWords(dir, 3);
+    nSequence = test1.getAllSequence(words);
+    for (unsigned int i = 0; i<nSequence.size(); i++) {
+        testHash.InsertNode(nSequence[i], 3);
+    }
 
-    vector<unsigned long long int> keys;                                              // Works
-    /*unsigned int matchCount = 0;
+    testHash.CheckOccupied();
+
+    /*vector<unsigned long long int> keys;                                              // Works
+    unsigned int matchCount = 0;
     cout << "\n\nTesting HashFunction and getKey:" << endl;
     unsigned long long int maxKey = 0;
     for (unsigned int i = 0; i<nSequence.size(); i++){

@@ -88,6 +88,20 @@ public:
         return HashFunctionKey(sentence);
     }*/
 
+    void CheckOccupied(){
+        for (unsigned long int i = 0; i <TableSz ; i++){
+            if (hTable[i]!=NULL){
+                HashNode* temp = hTable[i];
+                cout << "hTable[" << i << "]: ";
+                while (temp!=NULL){
+                    cout << temp->fileIdx << " ";
+                    temp = temp->next;
+                }
+                cout << endl;
+            }
+        }
+    }
+
 private:
     unsigned long long int HashFunctionKey(const string& k){
         unsigned long long int key = 0;
