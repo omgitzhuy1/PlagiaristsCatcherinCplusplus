@@ -36,6 +36,8 @@ public:
 
     vector<string> getAllWords(const string dir, const int filesIdx);
 
+    vector<string> getAllSequence(vector<string>& words);
+
 
 private:
 

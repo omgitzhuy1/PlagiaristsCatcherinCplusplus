@@ -70,3 +70,14 @@ vector<string> PlagiaristsCatcher::getAllWords(const string dir, const int files
     }
     return wordsInFile;
 }
+
+vector<string> PlagiaristsCatcher::getAllSequence(vector<string> &words) {
+    vector<string> nSequence;
+    string sentence;
+    for (unsigned int i =0; (i+(nWordsSeq-1))<words.size();i++){
+        sentence = words[i] + words[i+1] + words[i+2] + words[i+3] + words[i+4] + words[i+5];
+        nSequence.push_back(sentence);
+    }
+    words.erase(words.begin(), words.end());
+    return nSequence;
+}
