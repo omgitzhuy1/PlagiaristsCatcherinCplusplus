@@ -25,43 +25,26 @@ int PlagiaristsCatcher::getdir(string dir){
     }
 
     while ((dirp = readdir(dp)) != NULL) {
-        files.push_back(string(dirp->d_name));
+        fVect.push_back(string(dirp->d_name));
     }
-    files.erase(files.begin(), files.begin()+2);                    // erases . and ..
+    fVect.erase(fVect.begin(), fVect.begin()+2);                    // erases . and ..
     closedir(dp);
     return 0;
 }
 
-void PlagiaristsCatcher::printFileNames() {
-    for (int i = 0;i < files.size();i++) {
-        cout << i << " " << files[i] << endl;
+void PlagiaristsCatcher::vectorFiles(vector<string>& fileList) {
+    for (int i = 0;i < fVect.size();i++) {
+        fileList.push_back(fVect[i]);
     }
 }
 
-/*void PlagiaristsCatcher::printFileContents(const string dir, const int idx) {
-    string filePath = dir + "/" + files[idx];
-    string line;
-    fstream opnFile;
-    opnFile.open(filePath);
-    if(opnFile.is_open()){
-        cout << files[idx] << " opened" << endl;
-        while (getline(opnFile, line)){
-            cout << line << endl;
-        }
-        opnFile.close();
-    }
-    else
-        cout << "Error. File cannot open" << endl;
-
-}
-Used for testing purposes */
 
 vector<string> PlagiaristsCatcher::getAllWords(const string dir, const int filesIdx){
     vector<string> wordsInFile;
-    string filePath = dir + "/" + files[filesIdx];
+    string filePath = dir + "/" + fVect[filesIdx];
     string word;
     fstream opnFile;
-    opnFile.open(filePath);
+    opnFile.open(filePath.c_str());
     if (opnFile.is_open()){
         while (opnFile >> word){
             string newWord = removePunctuations(word);

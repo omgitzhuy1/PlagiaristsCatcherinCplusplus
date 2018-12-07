@@ -20,7 +20,7 @@ class PlagiaristsCatcher{
 
 public:
 
-    vector<string> files = vector<string>();
+    vector<string> fVect;
 
     PlagiaristsCatcher();
 
@@ -29,7 +29,7 @@ public:
     int getdir (string dir);
 
     // For Testing getting files
-    void printFileNames();
+    void vectorFiles(vector<string> &fileList);
 
     // For Testing opening files
     //void printFileContents(const string dir, const int idx);

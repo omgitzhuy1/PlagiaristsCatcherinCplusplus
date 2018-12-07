@@ -20,7 +20,7 @@ using namespace std;
 class HashNode{
 
 public:
-    unsigned int fileIdx;
+    int fileIdx;
     HashNode* next;
     explicit HashNode(const unsigned int Idx){
         this->fileIdx = Idx;
@@ -31,6 +31,7 @@ public:
 class HashTable{
 
 public:
+    static const long TableSz = 264601;
     HashTable(){
         hTable = new HashNode*[TableSz];
         for (int i = 0; i<TableSz; i++) hTable[i] = NULL;
@@ -102,6 +103,26 @@ public:
         }
     }
 
+    void checkPlag(int arr[],int row, int col){
+        for (unsigned long int h = 0; h < TableSz; h++) {
+            while (hTable[h] != NULL) {
+                HashNode* temp = hTable[h];
+                HashNode* n = temp->next;
+                while (n != NULL) {
+                    if (temp->fileIdx == n->fileIdx) {
+                        temp->next = n->next;
+                    } else if (temp->fileIdx != n->fileIdx){
+                        arr[(temp->fileIdx)*col+(n->fileIdx)] += 1;
+                    }
+                    n = n->next;
+                }
+                hTable[h] = temp->next;
+                delete temp;
+                delete n;
+            }
+        }
+    }
+
 private:
     unsigned long long int HashFunctionKey(const string& k){
         unsigned long long int key = 0;
@@ -112,7 +133,7 @@ private:
         }
         return (key%TableSz);
     }
-    const unsigned long int TableSz = 199999;
+    //static long TableSz;
     HashNode** hTable;                                      // hTable is a pointer to a bunch of HashNodes
 };
 

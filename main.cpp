@@ -7,72 +7,66 @@
 using namespace std;
 
 
-int main() {
+int main(int argc, char *argv[]) {
     cout << "Hello, World!" << endl;
-    string dir = "/Users/Huigi/Downloads/sm_doc_set";                                   // replace w/ argv[1], change dir when on your computer
-    int nwords = 6;                                                                     // replace w/ argv[2]
-    int criteria;                                                                       // argv[3], at least this much matching to print result
+    string dir = argv[1];
+    int nwords = atoi(argv[2]);                                                                     // replace w/ argv[2]
+    int criteria = atoi(argv[3]);                                                                       // argv[3], at least this much matching to print result
 
+    PlagiaristsCatcher start(nwords);
+    start.getdir(dir);
+    vector<string> fileList;
+    start.vectorFiles(fileList);
+    HashTable hash;
 
-    PlagiaristsCatcher test1(nwords);
+    for (unsigned int fileIdx = 0; fileIdx < fileList.size(); fileIdx++) {
+        vector<string> words = start.getAllWords(dir, fileIdx);
+        vector<string> sequences = start.getAllSequence(words);
+        for (unsigned int k = 0; k < sequences.size(); k++) {
+            hash.InsertNode(sequences[k], fileIdx);
+        }
+        sequences.clear();
+        words.clear();
 
-    test1.getdir(dir);
-
-    //cout << "\nTesting getdir:" << endl;                                              // works
-
-    //test1.printFileNames();
-
-    //cout << "\nTesting printFileContents:" << endl;
-    //test1.printFileContents(dir, 2);
-
-    //cout << "\nTesting getAllwords:" << endl;                                         // Works
-    vector<string> words = test1.getAllWords(dir, 2);
-    /*for (unsigned int i = 0; i < words.size(); i++){
-        cout << words[i];
-    }*/
-
-    //cout << "\n\nTesting getAllSequence:" << endl;                                    // Works
-    vector<string> nSequence = test1.getAllSequence(words);
-    /*for (unsigned int i = 0; i < nSequence.size(); i++){
-        cout << nSequence[i] << endl;
-    }*/
-
-    // cout << "Size of words vector (should be zero): " << words.size() << endl;       // Works
-
-    HashTable testHash;
-    for (unsigned int i = 0; i<nSequence.size(); i++) {
-        testHash.InsertNode(nSequence[i], 2);
     }
 
-    words = test1.getAllWords(dir, 3);
-    nSequence = test1.getAllSequence(words);
-    for (unsigned int i = 0; i<nSequence.size(); i++) {
-        testHash.InsertNode(nSequence[i], 3);
+    const int ROW = 5000;
+    const int COL = 5000;
+    vector<int> collision;
+    vector<int> file1;
+    vector<int> file2;
+    static int arr[ROW][COL];
+    for (int r = 0; r < ROW; r++) {
+        for (int c = 0; c < COL; c++) {
+            arr[r][c] = 0;
+        }
     }
 
-    testHash.CheckOccupied();
+    hash.checkPlag(*arr, ROW, COL);
 
-    /*vector<unsigned long long int> keys;                                              // Works
-    unsigned int matchCount = 0;
-    cout << "\n\nTesting HashFunction and getKey:" << endl;
-    unsigned long long int maxKey = 0;
-    for (unsigned int i = 0; i<nSequence.size(); i++){
-        unsigned long long int key = testHash.getKey(nSequence[i]);
-        cout << "key: " << key << " " << nSequence[i] << endl;
-        if (key > maxKey) maxKey = key;
-        keys.push_back(key);
-    }
-    cout << "\nmaxKey: " << maxKey << endl;
-
-    for (unsigned long long int i = 0; i<(keys.size()-1); i++ ){
-        for (unsigned long long int j = i+1; j<keys.size(); j++){
-            if (keys[i] == keys[j]) {
-                cout << "Match: " << keys[i] << endl;
-                matchCount++;
+    for (int i = 0; i < ROW; i++) {
+        for (int j = 0; j < COL; j++) {
+            if (arr[i][j] >= criteria) {
+                collision.push_back(arr[i][j]);
+                file1.push_back(i);
+                file2.push_back(j);
             }
         }
     }
-    cout << "\nmatchCount: " << matchCount << endl;*/
+
+    for (int m = 0; m < collision.size();m++) {
+        for (int n = m+1; n < collision.size();n++){
+            if (collision[m] < collision [n]){
+                iter_swap(collision.begin() + m, collision.begin() + n);
+                iter_swap(file1.begin() + m, file1.begin() + n);
+                iter_swap(file2.begin() + m, file2.begin() + n);
+            }
+        }
+    }
+
+    for (int d = 0; d < collision.size(); d++) {
+        cout << collision[d] << " collisions found between " << fileList[file1[d]] << " and " << fileList[file2[d]] << endl;
+    }
 
     return 0;
 }
