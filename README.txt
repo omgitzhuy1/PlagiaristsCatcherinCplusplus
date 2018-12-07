@@ -17,5 +17,5 @@ Instructions to run code:
 4. Press Enter to execute the command line prompt.
 
 Constraints:
-- The maximum amount of text files that this program can check is 5000
+- The maximum amount of text files that this program can check is 5000 (anymore than 5000 will cause errors)
    
