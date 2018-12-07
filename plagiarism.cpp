@@ -44,7 +44,7 @@ vector<string> PlagiaristsCatcher::getAllWords(const string dir, const int files
     string filePath = dir + "/" + fVect[filesIdx];
     string word;
     fstream opnFile;
-    opnFile.open(filePath.c_str());
+    opnFile.open(filePath);
     if (opnFile.is_open()){
         while (opnFile >> word){
             string newWord = removePunctuations(word);
@@ -58,8 +58,11 @@ vector<string> PlagiaristsCatcher::getAllSequence(vector<string> &words) {
     vector<string> nSequence;
     string sentence;
     for (unsigned int i =0; (i+(nWordsSeq-1))<words.size();i++){
-        sentence = words[i] + words[i+1] + words[i+2] + words[i+3] + words[i+4] + words[i+5];
+        for (int w = 0; w < nWordsSeq; w++) {
+            sentence = sentence + words[i+w];
+        }
         nSequence.push_back(sentence);
+	sentence.clear();
     }
     words.erase(words.begin(), words.end());
     return nSequence;
